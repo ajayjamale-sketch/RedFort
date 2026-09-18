@@ -13,7 +13,14 @@ import {
   AlertTriangle, 
   KeyRound,
   ShieldCheck,
-  ArrowLeft
+  Shield,
+  Scale,
+  Key,
+  Server,
+  ArrowLeft,
+  Radio,
+  ShieldAlert,
+  Smartphone
 } from 'lucide-react';
 import Logo from '@/components/Logo';
 import CaptchaWidget from '@/components/CaptchaWidget';
@@ -43,10 +50,15 @@ export default function LoginPage() {
       setLoginSuccess(true);
       if (typeof window !== 'undefined') {
         const isCso = email.toLowerCase().includes('cso') || email.toLowerCase().includes('executive');
+        const isGuard = email.toLowerCase().includes('guard') || email.toLowerCase().includes('field') || email.toLowerCase().includes('officer');
+        const isAuditor = email.toLowerCase().includes('auditor') || email.toLowerCase().includes('compliance') || email.toLowerCase().includes('audit');
+        const isAdmin = email.toLowerCase().includes('admin') && !email.toLowerCase().includes('super') || email.toLowerCase().includes('devops') || email.toLowerCase().includes('infra');
+        const isSuperAdmin = email.toLowerCase().includes('super') || email.toLowerCase().includes('governance');
+        const isEmployee = email.toLowerCase().includes('employee') || email.toLowerCase().includes('contractor') || email.toLowerCase().includes('portal') || email.toLowerCase().includes('staff');
         const userData = {
-          name: isCso ? 'Helena Vance' : (email.toLowerCase().includes('analyst') ? 'Alex Mercer' : email.split('@')[0]),
+          name: isEmployee ? 'Elena Rostova, Staff Systems Architect' : (isSuperAdmin ? 'Victoria Sterling, Chief Governance Officer' : (isCso ? 'Helena Vance' : (isGuard ? 'Officer Marcus Sterling' : (isAuditor ? 'Evelyn Archer, CISA' : (isAdmin ? 'Devon Vance, Lead DevOps' : (email.toLowerCase().includes('analyst') ? 'Alex Mercer' : email.split('@')[0])))))),
           email: email,
-          role: isCso ? 'Chief Security Officer (CSO)' : 'Security Analyst (GSOC)'
+          role: isEmployee ? 'Employee / Contractor' : (isSuperAdmin ? 'Platform Super Admin' : (isCso ? 'Chief Security Officer (CSO)' : (isGuard ? 'Security Guard / Field Officer' : (isAuditor ? 'Compliance Auditor' : (isAdmin ? 'IT Administrator' : 'Security Analyst (GSOC)')))))
         };
         localStorage.setItem('redfort_user', JSON.stringify(userData));
         window.dispatchEvent(new Event('redfort_auth_change'));
@@ -66,7 +78,46 @@ export default function LoginPage() {
     setErrorMessage('');
   };
 
+  const handleAutoFillGuard = () => {
+    setEmail('guard@redfort.enterprise');
+    setPassword('RedFort@2026#Guard');
+    setErrorMessage('');
+  };
+
+  const handleAutoFillAuditor = () => {
+    setEmail('auditor@redfort.enterprise');
+    setPassword('RedFort@2026#Auditor');
+    setErrorMessage('');
+  };
+
+  const handleAutoFillAdmin = () => {
+    setEmail('admin@redfort.enterprise');
+    setPassword('RedFort@2026#Admin');
+    setErrorMessage('');
+  };
+
+  const handleAutoFillSuperAdmin = () => {
+    setEmail('superadmin@redfort.enterprise');
+    setPassword('RedFort@2026#Governance');
+    setErrorMessage('');
+  };
+
+  const handleAutoFillEmployee = () => {
+    setEmail('employee@redfort.enterprise');
+    setPassword('RedFort@2026#Employee');
+    setErrorMessage('');
+  };
+
   const isCsoUser = email.toLowerCase().includes('cso') || email.toLowerCase().includes('executive');
+  const isGuardUser = email.toLowerCase().includes('guard') || email.toLowerCase().includes('field') || email.toLowerCase().includes('officer');
+  const isAuditorUser = email.toLowerCase().includes('auditor') || email.toLowerCase().includes('compliance') || email.toLowerCase().includes('audit');
+  const isAdminUser = email.toLowerCase().includes('admin') && !email.toLowerCase().includes('super') || email.toLowerCase().includes('devops') || email.toLowerCase().includes('infra');
+  const isSuperAdminUser = email.toLowerCase().includes('super') || email.toLowerCase().includes('governance');
+  const isEmployeeUser = email.toLowerCase().includes('employee') || email.toLowerCase().includes('contractor') || email.toLowerCase().includes('portal') || email.toLowerCase().includes('staff');
+
+  const redirectUrl = isEmployeeUser ? '/dashboard/portal' : (isSuperAdminUser ? '/dashboard/governance' : (isCsoUser ? '/dashboard/cso' : (isGuardUser ? '/dashboard/guard' : (isAuditorUser ? '/dashboard/auditor' : (isAdminUser ? '/dashboard/admin' : '/dashboard')))));
+  const redirectLabel = isEmployeeUser ? 'Enter Employee Self-Service Portal' : (isSuperAdminUser ? 'Enter Platform Governance Console' : (isCsoUser ? 'Enter CSO Executive Console' : (isGuardUser ? 'Enter Field Operations Console' : (isAuditorUser ? 'Enter Compliance Auditor Console' : (isAdminUser ? 'Enter IT Administrator Console' : 'Enter GSOC Command Center')))));
+  const redirectDesc = isEmployeeUser ? 'Launching Employee Digital Badge & Safety Portal...' : (isSuperAdminUser ? 'Launching Super Admin & Platform Governance Console...' : (isCsoUser ? 'Launching Chief Security Officer (CSO) Console...' : (isGuardUser ? 'Launching Security Guard Field Operations Console...' : (isAuditorUser ? 'Launching Compliance Auditor & Evidence Vault...' : (isAdminUser ? 'Launching IT Infrastructure & IAM Console...' : 'Launching Security Analyst GSOC Console...')))));
 
   return (
     <div className="min-h-screen w-full bg-[#0B0F19] text-white flex flex-col justify-between p-4 sm:p-6 lg:p-8 relative overflow-hidden selection:bg-[#F5762E] selection:text-white">
@@ -109,14 +160,14 @@ export default function LoginPage() {
             <div className="text-[10px] font-semibold text-[#64748B] uppercase tracking-wider text-center">
               Quick Demo Auto-Fill
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={handleAutoFillAnalyst}
                 className="w-full py-1.5 px-2 rounded-lg bg-[#F5762E]/10 hover:bg-[#F5762E]/20 border border-[#F5762E]/30 hover:border-[#F5762E] text-[#F5762E] text-[11px] font-mono font-semibold flex items-center justify-center space-x-1.5 transition-all cursor-pointer truncate"
               >
                 <KeyRound className="w-3 h-3 shrink-0" />
-                <span className="truncate">Analyst (GSOC)</span>
+                <span className="truncate">GSOC Analyst</span>
               </button>
               
               <button
@@ -125,7 +176,52 @@ export default function LoginPage() {
                 className="w-full py-1.5 px-2 rounded-lg bg-[#38BDF8]/10 hover:bg-[#38BDF8]/20 border border-[#38BDF8]/30 hover:border-[#38BDF8] text-[#38BDF8] text-[11px] font-mono font-semibold flex items-center justify-center space-x-1.5 transition-all cursor-pointer truncate"
               >
                 <ShieldCheck className="w-3 h-3 shrink-0" />
-                <span className="truncate">Executive (CSO)</span>
+                <span className="truncate">CSO Executive</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleAutoFillGuard}
+                className="w-full py-1.5 px-2 rounded-lg bg-[#22C55E]/10 hover:bg-[#22C55E]/20 border border-[#22C55E]/30 hover:border-[#22C55E] text-[#22C55E] text-[11px] font-mono font-semibold flex items-center justify-center space-x-1.5 transition-all cursor-pointer truncate"
+              >
+                <Radio className="w-3 h-3 shrink-0" />
+                <span className="truncate">Field Officer</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleAutoFillAuditor}
+                className="w-full py-1.5 px-2 rounded-lg bg-[#818CF8]/10 hover:bg-[#818CF8]/20 border border-[#818CF8]/30 hover:border-[#818CF8] text-[#818CF8] text-[11px] font-mono font-semibold flex items-center justify-center space-x-1.5 transition-all cursor-pointer truncate"
+              >
+                <Scale className="w-3 h-3 shrink-0" />
+                <span className="truncate">Auditor</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleAutoFillAdmin}
+                className="w-full py-1.5 px-2 rounded-lg bg-[#38BDF8]/10 hover:bg-[#38BDF8]/20 border border-[#38BDF8]/30 hover:border-[#38BDF8] text-[#38BDF8] text-[11px] font-mono font-semibold flex items-center justify-center space-x-1.5 transition-all cursor-pointer truncate"
+              >
+                <Key className="w-3 h-3 shrink-0" />
+                <span className="truncate">IT Admin</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleAutoFillSuperAdmin}
+                className="w-full py-1.5 px-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 hover:border-rose-500 text-rose-400 text-[11px] font-mono font-semibold flex items-center justify-center space-x-1.5 transition-all cursor-pointer truncate"
+              >
+                <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Super Admin</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleAutoFillEmployee}
+                className="w-full py-1.5 px-2 rounded-lg bg-[#F5762E]/10 hover:bg-[#F5762E]/20 border border-[#F5762E]/30 hover:border-[#F5762E] text-[#F5762E] text-[11px] font-mono font-semibold flex items-center justify-center space-x-1.5 transition-all cursor-pointer truncate col-span-2 sm:col-span-3"
+              >
+                <Smartphone className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Employee / Contractor Portal</span>
               </button>
             </div>
           </div>
@@ -138,15 +234,15 @@ export default function LoginPage() {
               <div>
                 <h3 className="text-lg font-bold text-white">Authenticated</h3>
                 <p className="text-xs text-[#94A3B8] mt-1 font-mono">
-                  {isCsoUser ? 'Launching Chief Security Officer (CSO) Console...' : 'Launching Security Analyst GSOC Console...'}
+                  {redirectDesc}
                 </p>
               </div>
               <div className="pt-2">
                 <Link
-                  href={isCsoUser ? '/dashboard/cso' : '/dashboard'}
+                  href={redirectUrl}
                   className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-lg bg-[#F5762E] hover:bg-[#FF9A5A] text-white text-xs font-semibold transition-all shadow-md"
                 >
-                  <span>{isCsoUser ? 'Enter CSO Executive Console' : 'Enter GSOC Command Center'}</span>
+                  <span>{redirectLabel}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

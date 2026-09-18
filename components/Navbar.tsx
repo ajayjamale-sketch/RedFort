@@ -126,25 +126,6 @@ export default function Navbar() {
 
   return (
     <header ref={navRef} className="sticky top-0 z-50 w-full bg-[#0B0F19]/95 backdrop-blur-md border-b border-[#1F2937]">
-      {/* Top Announcement Ribbon */}
-      <div className="bg-[#111827] text-xs text-[#94A3B8] border-b border-[#1F2937] py-1.5 px-4 hidden md:block">
-        <div className="max-w-[1280px] mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-[#22C55E] animate-pulse"></span>
-            <span className="font-mono text-[11px] text-[#F5762E] font-semibold uppercase tracking-wider">New Intelligence Report:</span>
-            <span>2026 Cyber-Physical Threat Convergence Outlook</span>
-            <Link href="/resources" className="text-white hover:text-[#F5762E] inline-flex items-center space-x-1 font-medium underline ml-2">
-              <span>Read Analysis</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-          <div className="flex items-center space-x-4 text-xs font-mono text-[#94A3B8]">
-            <span>GSOC Status: Nominal (99.99%)</span>
-            <span>Emergency 24/7: +1 (800) 733-3678</span>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navbar */}
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -360,7 +341,21 @@ export default function Navbar() {
 
               {/* Go to Dashboard Button */}
               <Link
-                href={user?.role?.includes('CSO') ? '/dashboard/cso' : '/dashboard'}
+                href={
+                  user?.role?.includes('Employee') || user?.role?.includes('Contractor') || user?.role?.includes('Portal')
+                    ? '/dashboard/portal'
+                    : (user?.role?.includes('Super') || user?.role?.includes('Governance')
+                        ? '/dashboard/governance'
+                        : (user?.role?.includes('CSO') 
+                            ? '/dashboard/cso' 
+                            : (user?.role?.includes('Guard') || user?.role?.includes('Field') 
+                                ? '/dashboard/guard' 
+                                : (user?.role?.includes('Auditor') || user?.role?.includes('Compliance') 
+                                    ? '/dashboard/auditor' 
+                                    : (user?.role?.includes('Admin') || user?.role?.includes('DevOps')
+                                        ? '/dashboard/admin'
+                                        : '/dashboard')))))
+                }
                 className="inline-flex items-center space-x-2 px-3.5 py-2 rounded text-xs font-semibold text-white bg-[#F5762E] hover:bg-[#FF9A5A] transition-all shadow-md focus:outline-none"
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
@@ -513,7 +508,21 @@ export default function Navbar() {
                 </div>
               </div>
               <Link
-                href={user?.role?.includes('CSO') ? '/dashboard/cso' : '/dashboard'}
+                href={
+                  user?.role?.includes('Employee') || user?.role?.includes('Contractor') || user?.role?.includes('Portal')
+                    ? '/dashboard/portal'
+                    : (user?.role?.includes('Super') || user?.role?.includes('Governance')
+                        ? '/dashboard/governance'
+                        : (user?.role?.includes('CSO') 
+                            ? '/dashboard/cso' 
+                            : (user?.role?.includes('Guard') || user?.role?.includes('Field') 
+                                ? '/dashboard/guard' 
+                                : (user?.role?.includes('Auditor') || user?.role?.includes('Compliance') 
+                                    ? '/dashboard/auditor' 
+                                    : (user?.role?.includes('Admin') || user?.role?.includes('DevOps')
+                                        ? '/dashboard/admin'
+                                        : '/dashboard')))))
+                }
                 className="w-full text-center py-2.5 rounded bg-[#F5762E] text-white font-semibold text-xs flex items-center justify-center space-x-1.5"
                 onClick={() => setMobileMenuOpen(false)}
               >

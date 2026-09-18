@@ -37,7 +37,10 @@ import {
   Camera,
   Cpu,
   UserCheck,
-  Menu
+  Menu,
+  Scale,
+  ShieldAlert,
+  Smartphone
 } from 'lucide-react';
 import Logo from '@/components/Logo';
 
@@ -498,17 +501,17 @@ export default function CSODashboardView({ initialNav = 'posture' }: CSODashboar
                     setActiveNav(item.id as CSONavTab);
                     setMobileSidebarOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap group ${
                     isSelected
                       ? 'bg-[#F5762E] text-white shadow-sm font-semibold'
                       : 'text-slate-300 hover:text-white hover:bg-[#151E33]'
                   }`}
                 >
-                  <div className="flex items-center space-x-2.5">
+                  <div className="flex items-center space-x-2.5 min-w-0 pr-2">
                     <Icon className="w-4 h-4 shrink-0" />
-                    <span>{item.label}</span>
+                    <span className="truncate">{item.label}</span>
                   </div>
-                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded shrink-0 whitespace-nowrap ${
                     isSelected
                       ? 'bg-black/20 text-white font-bold'
                       : (item.badgeColor || 'bg-[#151E33] text-slate-300 border border-[#1E293B]')
@@ -518,24 +521,6 @@ export default function CSODashboardView({ initialNav = 'posture' }: CSODashboar
                 </Link>
               );
             })}
-          </div>
-
-          {/* Quick Switch to Operational GSOC Console */}
-          <div className="pt-2 border-t border-[#1E293B]">
-            <div className="px-2 py-1 text-[10px] font-semibold text-[#64748B] uppercase tracking-wider">
-              Role Switcher
-            </div>
-            <Link
-              href="/dashboard"
-              onClick={() => setMobileSidebarOpen(false)}
-              className="w-full flex items-center justify-between px-3 py-2 mt-1 rounded-lg text-xs font-medium bg-[#151E33] hover:bg-[#1E293B] text-slate-200 hover:text-white transition-colors border border-[#1E293B] group"
-            >
-              <div className="flex items-center space-x-2.5">
-                <Radio className="w-4 h-4 text-[#F5762E] group-hover:animate-pulse" />
-                <span>Security Analyst (GSOC)</span>
-              </div>
-              <ArrowRight className="w-3.5 h-3.5 text-[#64748B] group-hover:text-white transition-transform group-hover:translate-x-0.5" />
-            </Link>
           </div>
 
         </div>
