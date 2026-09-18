@@ -1,0 +1,6 @@
+'use strict';
+import { redirect } from 'next/navigation';
+
+export default function CompanyIndexPage() {
+  redirect('/company/about-us');
+}
