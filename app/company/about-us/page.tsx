@@ -17,7 +17,6 @@ import {
   Sparkles,
   Compass
 } from 'lucide-react';
-import { LEADERSHIP_TEAM } from '@/lib/siteData';
 
 export default function AboutUsPage() {
   return (
@@ -161,45 +160,7 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* 4. LEADERSHIP / TEAM [light bg: #F7F7F5] */}
-      <section className="w-full bg-[#F7F7F5] text-[#0B0F19] py-20 px-4 sm:px-6 lg:px-8 border-b border-[#E2E8F0]">
-        <div className="max-w-[1280px] mx-auto space-y-12">
-          
-          <div className="text-center max-w-3xl mx-auto space-y-3">
-            <div className="text-xs font-mono text-[#F5762E] font-bold uppercase tracking-wider">
-              EXECUTIVE LEADERSHIP
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19]">
-              Led by enterprise defense veterans.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {LEADERSHIP_TEAM.map((member, idx) => (
-              <div key={idx} className="bg-white border border-[#E2E8F0] rounded-xl p-6 shadow-sm flex flex-col justify-between">
-                <div className="space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-[#0B0F19] border-2 border-[#F5762E] flex items-center justify-center text-xl font-bold font-mono text-[#F5762E]">
-                    {member.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-[#0B0F19]">{member.name}</h3>
-                    <div className="text-xs font-mono text-[#F5762E] mt-0.5">{member.title}</div>
-                  </div>
-                  <p className="text-xs text-[#475569] leading-relaxed">
-                    {member.bio}
-                  </p>
-                </div>
-                <div className="pt-4 mt-4 border-t border-[#F1F5F9] text-[11px] font-mono text-[#0B0F19] font-semibold">
-                  {member.experience}
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 5. CTA BAND [dark] (Two smaller CTAs side by side: "Join us" + "Request a Demo") */}
+      {/* 4. CTA BAND [dark] */}
       <section className="w-full bg-[#0B0F19] text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-[#1F2937]">
         <div className="max-w-[1000px] mx-auto text-center space-y-8">
           

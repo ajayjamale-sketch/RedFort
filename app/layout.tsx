@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import LayoutShell from '@/components/LayoutShell';
 
 const inter = Inter({
   variable: '--font-geist-sans',
@@ -32,9 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} antialiased scroll-smooth`}>
       <body className="min-h-screen bg-[#0B0F19] text-white flex flex-col selection:bg-[#F5762E] selection:text-white">
-        <Navbar />
-        <main className="flex-1 w-full">{children}</main>
-        <Footer />
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );

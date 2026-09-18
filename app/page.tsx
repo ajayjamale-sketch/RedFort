@@ -38,6 +38,7 @@ import MockupDashboard from '@/components/MockupDashboard';
 import HeroCarousel from '@/components/HeroCarousel';
 import LogoMarquee from '@/components/LogoMarquee';
 import ProblemConvergenceSection from '@/components/ProblemConvergenceSection';
+import ValuePillarsSection from '@/components/ValuePillarsSection';
 import TabsStories from '@/components/TabsStories';
 import CtaBand from '@/components/CtaBand';
 import { 
@@ -121,84 +122,7 @@ export default function HomePage() {
       <ProblemConvergenceSection />
 
       {/* 3. THREE-PILLAR VALUE PROPOSITION [light bg: #F7F7F5] */}
-      <section className="w-full bg-[#F7F7F5] text-[#0B0F19] py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[1280px] mx-auto space-y-12">
-          
-          <div className="text-center max-w-3xl mx-auto space-y-4">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#E2E8F0] text-[#0B0F19] text-xs font-mono font-semibold uppercase tracking-wider">
-              <span>CORE VALUE PILLARS</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0B0F19]">
-              The three pillars of unified enterprise defense.
-            </h2>
-            <p className="text-base sm:text-lg text-[#475569]">
-              Purpose-built architecture to ingest every event, trigger instantaneous containment, and provide board-ready risk intelligence.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            {/* Column 1: Unified Signal View */}
-            <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-[#0B0F19] flex items-center justify-center text-[#F5762E]">
-                  <Activity className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0B0F19]">
-                  Unified Signal View
-                </h3>
-                <p className="text-sm text-[#475569] leading-relaxed">
-                  Every event in one dashboard, correlated across sources. Ingests cyber logs, PACS badge taps, CCTV motion triggers, and sensor feeds with sub-second latency.
-                </p>
-              </div>
-              <div className="pt-6 border-t border-[#E2E8F0] mt-6 text-xs font-mono text-[#0B0F19] font-semibold flex items-center justify-between">
-                <span>Ingestion: 100k+ EPS</span>
-                <span className="text-[#22C55E]">Zero Data Loss</span>
-              </div>
-            </div>
-
-            {/* Column 2: Automated Response */}
-            <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-[#0B0F19] flex items-center justify-center text-[#F5762E]">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0B0F19]">
-                  Automated Response
-                </h3>
-                <p className="text-sm text-[#475569] leading-relaxed">
-                  Workflows and escalations trigger without manual handoffs. SOAR playbooks automatically isolate compromised hosts, lock critical doors, and notify emergency teams.
-                </p>
-              </div>
-              <div className="pt-6 border-t border-[#E2E8F0] mt-6 text-xs font-mono text-[#0B0F19] font-semibold flex items-center justify-between">
-                <span>Playbook Trigger: &lt; 100ms</span>
-                <span className="text-[#F5762E]">78% MTTR Drop</span>
-              </div>
-            </div>
-
-            {/* Column 3: Actionable Intelligence */}
-            <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-              <div className="space-y-4">
-                <div className="w-12 h-12 rounded-lg bg-[#0B0F19] flex items-center justify-center text-[#F5762E]">
-                  <BarChart3 className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-[#0B0F19]">
-                  Actionable Intelligence
-                </h3>
-                <p className="text-sm text-[#475569] leading-relaxed">
-                  Risk scores, compliance posture, and security analytics in one place. Translates technical telemetry and audit findings into executive board reporting.
-                </p>
-              </div>
-              <div className="pt-6 border-t border-[#E2E8F0] mt-6 text-xs font-mono text-[#0B0F19] font-semibold flex items-center justify-between">
-                <span>Continuous GRC Mapping</span>
-                <span className="text-[#22C55E]">100% Audit Ready</span>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
+      <ValuePillarsSection />
 
       {/* 4. SOLUTIONS BY PROGRAM [dark bg: #0B0F19] (Ontic Tabs Stories) */}
       <section className="w-full bg-[#0B0F19] text-white py-20 px-4 sm:px-6 lg:px-8 border-b border-[#1F2937]">

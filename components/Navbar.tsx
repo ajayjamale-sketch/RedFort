@@ -33,10 +33,12 @@ import {
   Video,
   Calendar,
   Lock,
-  ExternalLink,
   Users,
   Award,
-  ArrowRight
+  ArrowRight,
+  LayoutDashboard,
+  LogOut,
+  User
 } from 'lucide-react';
 import { PRODUCT_MODULES, INDUSTRY_SOLUTIONS } from '@/lib/siteData';
 import Logo from '@/components/Logo';
@@ -70,6 +72,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileSection, setMobileSection] = useState<string | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string; role: string } | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -77,6 +80,39 @@ export default function Navbar() {
     setMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [pathname]);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('redfort_user');
+        if (stored) {
+          try {
+            setUser(JSON.parse(stored));
+          } catch (e) {
+            setUser(null);
+          }
+        } else {
+          setUser(null);
+        }
+      }
+    };
+
+    checkAuth();
+    window.addEventListener('storage', checkAuth);
+    window.addEventListener('redfort_auth_change', checkAuth);
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+      window.removeEventListener('redfort_auth_change', checkAuth);
+    };
+  }, [pathname]);
+
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('redfort_user');
+      window.dispatchEvent(new Event('redfort_auth_change'));
+    }
+    setUser(null);
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -289,64 +325,14 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Company Dropdown */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setActiveDropdown(activeDropdown === 'company' ? null : 'company')}
-                className={`px-3 py-2 rounded text-sm font-medium flex items-center space-x-1 transition-colors ${
-                  pathname.startsWith('/company') || activeDropdown === 'company'
-                    ? 'text-[#F5762E] font-semibold' 
-                    : 'text-[#94A3B8] hover:text-white'
-                }`}
-              >
-                <span>Company</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'company' ? 'rotate-180' : ''}`} />
-              </button>
-
-              {activeDropdown === 'company' && (
-                <div className="absolute right-0 top-full mt-2 w-[340px] bg-[#111827] border border-[#1F2937] rounded-lg shadow-2xl p-4 flex flex-col space-y-1.5 z-50">
-                  <div className="pb-2 border-b border-[#1F2937]">
-                    <h4 className="text-xs font-mono uppercase text-[#F5762E] font-semibold">About RedFort</h4>
-                  </div>
-                  <Link href="/company/about-us" onClick={() => setActiveDropdown(null)} className="p-2 rounded hover:bg-[#0B0F19] flex items-center space-x-3 text-xs text-white hover:text-[#F5762E]">
-                    <Users className="w-4 h-4 text-[#F5762E]" />
-                    <div>
-                      <div className="font-semibold">About Us</div>
-                      <div className="text-[11px] text-[#94A3B8]">Mission, leadership, and vision</div>
-                    </div>
-                  </Link>
-                  <Link href="/company/trust-and-security" onClick={() => setActiveDropdown(null)} className="p-2 rounded hover:bg-[#0B0F19] flex items-center space-x-3 text-xs text-white hover:text-[#F5762E]">
-                    <Lock className="w-4 h-4 text-[#F5762E]" />
-                    <div>
-                      <div className="font-semibold">Trust & Security</div>
-                      <div className="text-[11px] text-[#94A3B8]">SOC 2, ISO 27001, and architecture</div>
-                    </div>
-                  </Link>
-                  <Link href="/company/about-us#careers" onClick={() => setActiveDropdown(null)} className="p-2 rounded hover:bg-[#0B0F19] flex items-center space-x-3 text-xs text-white hover:text-[#F5762E]">
-                    <Award className="w-4 h-4 text-[#F5762E]" />
-                    <div>
-                      <div className="font-semibold">Careers</div>
-                      <div className="text-[11px] text-[#94A3B8]">Join our mission in defense</div>
-                    </div>
-                  </Link>
-                  <Link href="/company/about-us#newsroom" onClick={() => setActiveDropdown(null)} className="p-2 rounded hover:bg-[#0B0F19] flex items-center space-x-3 text-xs text-white hover:text-[#F5762E]">
-                    <FileText className="w-4 h-4 text-[#F5762E]" />
-                    <div>
-                      <div className="font-semibold">Newsroom</div>
-                      <div className="text-[11px] text-[#94A3B8]">Press releases and announcements</div>
-                    </div>
-                  </Link>
-                  <Link href="/company/about-us#partners" onClick={() => setActiveDropdown(null)} className="p-2 rounded hover:bg-[#0B0F19] flex items-center space-x-3 text-xs text-white hover:text-[#F5762E]">
-                    <Layers className="w-4 h-4 text-[#F5762E]" />
-                    <div>
-                      <div className="font-semibold">Partners</div>
-                      <div className="text-[11px] text-[#94A3B8]">SIEM, CCTV, and PACS integrations</div>
-                    </div>
-                  </Link>
-                </div>
-              )}
-            </div>
+            <Link 
+              href="/company/about-us" 
+              className={`px-3 py-2 rounded text-sm font-medium transition-colors ${
+                pathname.startsWith('/company') ? 'text-[#F5762E] font-semibold' : 'text-[#94A3B8] hover:text-white'
+              }`}
+            >
+              Company
+            </Link>
 
             <Link 
               href="/pricing" 
@@ -359,20 +345,55 @@ export default function Navbar() {
           </nav>
 
           {/* Desktop Right Utilities */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <Link 
-              href="/request-demo" 
-              className="text-sm font-medium text-[#94A3B8] hover:text-white transition-colors"
-            >
-              Client Login
-            </Link>
-            <Link
-              href="/request-demo"
-              className="inline-flex items-center justify-center px-4 py-2.5 rounded text-sm font-semibold text-white bg-[#F5762E] hover:bg-[#FF9A5A] transition-all shadow-md focus:outline-none"
-            >
-              Request a Demo
-            </Link>
-          </div>
+          {user ? (
+            <div className="hidden lg:flex items-center space-x-3">
+              {/* User Profile Badge */}
+              <div className="flex items-center space-x-2 bg-[#111827] px-2.5 py-1 rounded-lg border border-[#1F2937]">
+                <div className="w-6 h-6 rounded-full bg-[#F5762E] text-white font-bold text-xs flex items-center justify-center">
+                  {user.name.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="text-left font-mono">
+                  <div className="text-xs font-semibold text-white leading-tight">{user.name}</div>
+                  <div className="text-[10px] text-[#22C55E] leading-tight">● Active Session</div>
+                </div>
+              </div>
+
+              {/* Go to Dashboard Button */}
+              <Link
+                href={user?.role?.includes('CSO') ? '/dashboard/cso' : '/dashboard'}
+                className="inline-flex items-center space-x-2 px-3.5 py-2 rounded text-xs font-semibold text-white bg-[#F5762E] hover:bg-[#FF9A5A] transition-all shadow-md focus:outline-none"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Go to Dashboard</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+
+              {/* Quick Logout Button */}
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="p-2 text-slate-400 hover:text-[#EF4444] rounded hover:bg-[#111827] transition-colors cursor-pointer"
+                title="Log Out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <div className="hidden lg:flex items-center space-x-4">
+              <Link 
+                href="/login" 
+                className="text-sm font-medium text-[#94A3B8] hover:text-white transition-colors"
+              >
+                Client Login
+              </Link>
+              <Link
+                href="/request-demo"
+                className="inline-flex items-center justify-center px-4 py-2.5 rounded text-sm font-semibold text-white bg-[#F5762E] hover:bg-[#FF9A5A] transition-all shadow-md focus:outline-none"
+              >
+                Request a Demo
+              </Link>
+            </div>
+          )}
 
           {/* Mobile Menu Toggle Button */}
           <div className="flex lg:hidden items-center space-x-2">
@@ -469,15 +490,7 @@ export default function Navbar() {
             className="block py-2 text-sm font-semibold text-white border-b border-[#1F2937]"
             onClick={() => setMobileMenuOpen(false)}
           >
-            Company & About Us
-          </Link>
-
-          <Link
-            href="/company/trust-and-security"
-            className="block py-2 text-sm font-semibold text-white border-b border-[#1F2937]"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Trust & Security
+            Company
           </Link>
 
           <Link
@@ -488,22 +501,55 @@ export default function Navbar() {
             Pricing
           </Link>
 
-          <div className="pt-4 flex flex-col space-y-2">
-            <Link
-              href="/request-demo"
-              className="w-full text-center py-2.5 rounded bg-[#F5762E] text-white font-semibold text-sm"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Request a Demo
-            </Link>
-            <Link
-              href="/request-demo"
-              className="w-full text-center py-2 rounded border border-[#1F2937] text-[#94A3B8] text-sm"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Client Login
-            </Link>
-          </div>
+          {user ? (
+            <div className="pt-4 flex flex-col space-y-2">
+              <div className="flex items-center space-x-2.5 p-2.5 rounded-lg bg-[#111827] border border-[#1F2937]">
+                <div className="w-7 h-7 rounded-full bg-[#F5762E] text-white font-bold text-xs flex items-center justify-center">
+                  {user.name.slice(0, 2).toUpperCase()}
+                </div>
+                <div className="text-left font-mono">
+                  <div className="text-xs font-semibold text-white">{user.name}</div>
+                  <div className="text-[10px] text-[#22C55E]">● Active Session</div>
+                </div>
+              </div>
+              <Link
+                href={user?.role?.includes('CSO') ? '/dashboard/cso' : '/dashboard'}
+                className="w-full text-center py-2.5 rounded bg-[#F5762E] text-white font-semibold text-xs flex items-center justify-center space-x-1.5"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Go to Dashboard</span>
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  handleLogout();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full text-center py-2 rounded border border-[#EF4444]/30 text-[#EF4444] text-xs font-semibold flex items-center justify-center space-x-1.5 hover:bg-[#EF4444]/10 transition-colors cursor-pointer"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Log Out</span>
+              </button>
+            </div>
+          ) : (
+            <div className="pt-4 flex flex-col space-y-2">
+              <Link
+                href="/request-demo"
+                className="w-full text-center py-2.5 rounded bg-[#F5762E] text-white font-semibold text-sm"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Request a Demo
+              </Link>
+              <Link
+                href="/login"
+                className="w-full text-center py-2 rounded border border-[#1F2937] text-[#94A3B8] text-sm"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Client Login
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </header>
