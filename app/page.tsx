@@ -80,7 +80,7 @@ export default function HomePage() {
 
           {/* Clean High-Impact Headline */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.12]">
-            One command center for every security signal — <span className="text-[#F5762E]">cyber, physical,</span> and compliance.
+            One command center for every security signal  <span className="text-[#F5762E]">cyber, physical,</span> and compliance.
           </h1>
 
           {/* Focused Subhead */}
